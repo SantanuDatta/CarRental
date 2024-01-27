@@ -307,8 +307,8 @@
 @section('pageScripts')
     <script>
         //Showing Saved locations From Database
-        var savedDivisionId = "{{ $savedDivisionId}}";
-        var savedDistrictId = "{{ $savedDistrictId}}";
+        var savedDivisionId = "{{ $savedDivisionId }}";
+        var savedDistrictId = "{{ $savedDistrictId }}";
 
         //Trggering and Changing
         $("#divisions").val(savedDivisionId);
