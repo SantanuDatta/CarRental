@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     use HasFactory;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -33,15 +34,19 @@ class Order extends Model
         'currency',
         'transaction_id',
     ];
-    public function division(){
+
+    public function division()
+    {
         return $this->belongsTo(Division::class);
     }
 
-    public function district(){
+    public function district()
+    {
         return $this->belongsTo(District::class);
     }
-    
-    public function car(){
+
+    public function car()
+    {
         return $this->belongsTo(Car::class);
     }
 }

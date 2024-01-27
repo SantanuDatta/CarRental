@@ -17,6 +17,7 @@ class ExtraController extends Controller
     public function index()
     {
         $extras = Extra::orderBy('id', 'asc')->get();
+
         return view('backend.pages.extra.manage', compact('extras'));
     }
 
@@ -28,30 +29,31 @@ class ExtraController extends Controller
     public function create()
     {
         $cars = Car::orderBy('name', 'asc')->get();
+
         return view('backend.pages.extra.create', compact('cars'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         $extra = new Extra();
-        $extra->car_id              = $request->car_id;
-        $extra->additional_driver   = $request->additional_driver;
-        $extra->gps                 = $request->gps;
-        $extra->bicycle_rack        = $request->bicycle_rack;
-        $extra->music               = $request->music;
+        $extra->car_id = $request->car_id;
+        $extra->additional_driver = $request->additional_driver;
+        $extra->gps = $request->gps;
+        $extra->bicycle_rack = $request->bicycle_rack;
+        $extra->music = $request->music;
 
-        $notification = array(
-            'alert-type'    => 'success',
-            'message'       => 'Extras Have Been Added!',
-        );
+        $notification = [
+            'alert-type' => 'success',
+            'message' => 'Extras Have Been Added!',
+        ];
 
         $extra->save();
+
         return redirect()->route('extra.manage')->with($notification);
     }
 
@@ -75,10 +77,11 @@ class ExtraController extends Controller
     public function edit($id)
     {
         $extra = Extra::find($id);
-        if(!is_null($extra)){
+        if (! is_null($extra)) {
             $cars = Car::orderBy('name', 'asc')->get();
+
             return view('backend.pages.extra.edit', compact('extra', 'cars'));
-        }else{
+        } else {
             //404
         }
     }
@@ -86,24 +89,24 @@ class ExtraController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
         $extra = Extra::find($id);
-        $extra->additional_driver   = $request->additional_driver;
-        $extra->gps                 = $request->gps;
-        $extra->bicycle_rack        = $request->bicycle_rack;
-        $extra->music               = $request->music;
+        $extra->additional_driver = $request->additional_driver;
+        $extra->gps = $request->gps;
+        $extra->bicycle_rack = $request->bicycle_rack;
+        $extra->music = $request->music;
 
-        $notification = array(
-            'alert-type'    => 'success',
-            'message'       => 'Extras Updated Successfully!',
-        );
+        $notification = [
+            'alert-type' => 'success',
+            'message' => 'Extras Updated Successfully!',
+        ];
 
         $extra->save();
+
         return redirect()->route('extra.manage')->with($notification);
     }
 
@@ -116,14 +119,15 @@ class ExtraController extends Controller
     public function destroy($id)
     {
         $extra = Extra::find($id);
-        if(!is_null($extra)){
-            $notification = array(
-                'alert-type'    => 'error',
-                'message'       => 'Extras Deleted Successfully!',
-            );
+        if (! is_null($extra)) {
+            $notification = [
+                'alert-type' => 'error',
+                'message' => 'Extras Deleted Successfully!',
+            ];
             $extra->delete();
+
             return view('backend.pages.extra.manage')->with($notification);
-        }else{
+        } else {
             //404
         }
     }

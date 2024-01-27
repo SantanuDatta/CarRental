@@ -17,6 +17,7 @@ class ProtectionController extends Controller
     public function index()
     {
         $protections = Protection::orderBy('id', 'asc')->get();
+
         return view('backend.pages.protection.manage', compact('protections'));
     }
 
@@ -28,30 +29,31 @@ class ProtectionController extends Controller
     public function create()
     {
         $cars = Car::orderBy('name', 'asc')->get();
+
         return view('backend.pages.protection.create', compact('cars'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         $protection = new Protection();
-        $protection->car_id                     = $request->car_id;
-        $protection->collision_damage_waiver    = $request->collision_damage_waiver;
-        $protection->theft_protection           = $request->theft_protection;
-        $protection->rental_contact_fee         = $request->rental_contact_fee;
+        $protection->car_id = $request->car_id;
+        $protection->collision_damage_waiver = $request->collision_damage_waiver;
+        $protection->theft_protection = $request->theft_protection;
+        $protection->rental_contact_fee = $request->rental_contact_fee;
         $protection->personal_first_aid_service = $request->personal_first_aid_service;
 
-        $notification = array(
-            'alert-type'    => 'success',
-            'message'       => 'Protections Have Been Added!',
-        );
+        $notification = [
+            'alert-type' => 'success',
+            'message' => 'Protections Have Been Added!',
+        ];
 
         $protection->save();
+
         return redirect()->route('protection.manage')->with($notification);
     }
 
@@ -75,10 +77,11 @@ class ProtectionController extends Controller
     public function edit($id)
     {
         $protection = Protection::find($id);
-        if(!is_null($protection)){
+        if (! is_null($protection)) {
             $cars = Car::orderBy('name', 'asc')->get();
+
             return view('backend.pages.protection.edit', compact('protection', 'cars'));
-        }else{
+        } else {
             //404
         }
     }
@@ -86,24 +89,24 @@ class ProtectionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
         $protection = Protection::find($id);
-        $protection->collision_damage_waiver     = $request->collision_damage_waiver;
-        $protection->theft_protection            = $request->theft_protection;
-        $protection->rental_contact_fee          = $request->rental_contact_fee;
-        $protection->personal_first_aid_service  = $request->personal_first_aid_service;
+        $protection->collision_damage_waiver = $request->collision_damage_waiver;
+        $protection->theft_protection = $request->theft_protection;
+        $protection->rental_contact_fee = $request->rental_contact_fee;
+        $protection->personal_first_aid_service = $request->personal_first_aid_service;
 
-        $notification = array(
-            'alert-type'    => 'success',
-            'message'       => 'Protections Updated Successfully!',
-        );
+        $notification = [
+            'alert-type' => 'success',
+            'message' => 'Protections Updated Successfully!',
+        ];
 
         $protection->save();
+
         return redirect()->route('protection.manage')->with($notification);
     }
 
@@ -116,14 +119,15 @@ class ProtectionController extends Controller
     public function destroy($id)
     {
         $protection = Protection::find($id);
-        if(!is_null($protection)){
-            $notification = array(
-                'alert-type'    => 'error',
-                'message'       => 'Protections Deleted Successfully!',
-            );
+        if (! is_null($protection)) {
+            $notification = [
+                'alert-type' => 'error',
+                'message' => 'Protections Deleted Successfully!',
+            ];
             $protection->delete();
+
             return view('backend.pages.protection.manage')->with($notification);
-        }else{
+        } else {
             //404
         }
     }

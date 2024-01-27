@@ -18,6 +18,7 @@ class CustomerController extends Controller
     public function index()
     {
         $customers = User::Where('role', 2)->orderBy('name', 'asc')->get();
+
         return view('backend.pages.customer.manage', compact('customers'));
     }
 
@@ -34,7 +35,6 @@ class CustomerController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -46,19 +46,20 @@ class CustomerController extends Controller
         ]);
 
         $customer = User::create([
-            'name'      => $request->name,
-            'email'     => $request->email,
-            'password'  => Hash::make($request->password),
-            'role'      => $request->role,
-            'status'    => $request->status,
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role' => $request->role,
+            'status' => $request->status,
         ]);
 
-        $notification = array(
-            'alert-type'    => 'success',
-            'message'       => 'New Customer Registered!',
-        );
+        $notification = [
+            'alert-type' => 'success',
+            'message' => 'New Customer Registered!',
+        ];
 
         event(new Registered($customer));
+
         return redirect()->route('customer.manage')->with($notification);
     }
 
@@ -82,9 +83,9 @@ class CustomerController extends Controller
     public function edit($id)
     {
         $customer = User::find($id);
-        if(!is_null($customer)){
+        if (! is_null($customer)) {
             return view('backend.pages.customer.edit', compact('customer'));
-        }else{
+        } else {
             //404
         }
     }
@@ -92,20 +93,19 @@ class CustomerController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
         $customer = User::find($id);
-        $customer->name       = $request->name;
-        $customer->role       = $request->role;
-        $customer->status     = $request->status;
-        $notification = array(
-            'alert-type'    => 'success',
-            'message'       => 'Customer Has Been Updated!',
-        );
+        $customer->name = $request->name;
+        $customer->role = $request->role;
+        $customer->status = $request->status;
+        $notification = [
+            'alert-type' => 'success',
+            'message' => 'Customer Has Been Updated!',
+        ];
         $customer->save();
 
         return redirect()->route('customer.manage')->with($notification);
@@ -120,15 +120,16 @@ class CustomerController extends Controller
     public function destroy($id)
     {
         $customer = User::find($id);
-        if(!is_null($customer)){
-            $notification = array(
-                'alert-type'    => 'error',
-                'message'       => 'Customer Has Been Removed!',
-            );
+        if (! is_null($customer)) {
+            $notification = [
+                'alert-type' => 'error',
+                'message' => 'Customer Has Been Removed!',
+            ];
             $customer->delete();
-        }else{
+        } else {
             //404
         }
+
         return redirect()->route('customer.manage')->with($notification);
     }
 }

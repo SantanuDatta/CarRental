@@ -4,9 +4,8 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Setting;
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use File;
+use Illuminate\Http\Request;
 use Image;
 
 class SettingController extends Controller
@@ -17,8 +16,9 @@ class SettingController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {   
+    {
         $settings = Setting::where('id', 1)->get();
+
         return view('backend.pages.setting.manage', compact('settings'));
     }
 
@@ -35,7 +35,6 @@ class SettingController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -68,7 +67,6 @@ class SettingController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -79,36 +77,37 @@ class SettingController extends Controller
         $setting->email = $request->email;
         $setting->phone_no = $request->phone_no;
         $setting->address = $request->address;
-        if($request->logo){
-            if(File::exists('backend/img/settings/logo/' . $setting->logo)){
-                File::delete('backend/img/settings/logo/' . $setting->logo);
+        if ($request->logo) {
+            if (File::exists('backend/img/settings/logo/'.$setting->logo)) {
+                File::delete('backend/img/settings/logo/'.$setting->logo);
             }
             $logo = $request->file('logo');
             $logoName = $setting->site_title.'-logo';
-            $logoImg = $logoName. '-' .rand() . '.' . $logo->getClientOriginalExtension();
-            $location = public_path('backend/img/settings/logo/' . $logoImg);
+            $logoImg = $logoName.'-'.rand().'.'.$logo->getClientOriginalExtension();
+            $location = public_path('backend/img/settings/logo/'.$logoImg);
             $imageResize = Image::make($logo);
             $imageResize->fit(153, 52)->save($location);
             $setting->logo = $logoImg;
         }
-        if($request->favicon){
-            if(File::exists('backend/img/settings/favicon/' . $setting->favicon)){
-                File::delete('backend/img/settings/favicon/' . $setting->favicon);
+        if ($request->favicon) {
+            if (File::exists('backend/img/settings/favicon/'.$setting->favicon)) {
+                File::delete('backend/img/settings/favicon/'.$setting->favicon);
             }
             $favicon = $request->file('favicon');
             $faviconName = $setting->site_title.'-favicon';
-            $faviconImg = $faviconName. '-' .rand() . '.' . $favicon->getClientOriginalExtension();
-            $location = public_path('backend/img/settings/favicon/' . $faviconImg);
+            $faviconImg = $faviconName.'-'.rand().'.'.$favicon->getClientOriginalExtension();
+            $location = public_path('backend/img/settings/favicon/'.$faviconImg);
             $imageResize = Image::make($favicon);
             $imageResize->fit(48, 48)->save($location);
             $setting->favicon = $faviconImg;
         }
 
-        $notification = array(
-            'alert-type'    => 'success',
-            'message'       => 'Settings Have Been Updated!',
-        );
+        $notification = [
+            'alert-type' => 'success',
+            'message' => 'Settings Have Been Updated!',
+        ];
         $setting->save();
+
         return redirect()->back()->with($notification);
     }
 

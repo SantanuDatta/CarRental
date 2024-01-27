@@ -17,6 +17,7 @@ class OrderController extends Controller
     public function index()
     {
         $orders = Order::orderBy('id', 'desc')->get();
+
         return view('backend.pages.order.manage', compact('orders'));
     }
 
@@ -33,7 +34,6 @@ class OrderController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -50,8 +50,9 @@ class OrderController extends Controller
     public function show($id)
     {
         $order = Order::find($id);
-        if(!is_null($id)){
+        if (! is_null($id)) {
             $carts = Cart::orderBy('id', 'asc')->where('order_id', $order->id)->get();
+
             return view('backend.pages.order.details', compact('order', 'carts'));
         }
     }
@@ -70,7 +71,6 @@ class OrderController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -79,12 +79,13 @@ class OrderController extends Controller
         $order = Order::find($id);
         $order->status = $request->status;
 
-        $notification = array(
-            'alert-type'    => 'success',
-            'message'       => 'Order Status Updated Successfully!',
-        );
+        $notification = [
+            'alert-type' => 'success',
+            'message' => 'Order Status Updated Successfully!',
+        ];
 
         $order->save();
+
         return redirect()->back()->with($notification);
     }
 

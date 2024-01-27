@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 class Cart extends Model
 {
     use HasFactory;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -38,37 +39,44 @@ class Cart extends Model
         'personal_first_aid_service',
     ];
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function car(){
+    public function car()
+    {
         return $this->belongsTo(Car::class);
     }
 
-    public function order(){
+    public function order()
+    {
         return $this->belongsTo(Order::class);
     }
 
-    public static function totalCarts(){
-        if(Auth::check()){
-            $carts = Cart::where('user_id', Auth::user()->id)->where('order_id', NULL)->get();
-        }else{
-            $carts = Cart::where('ip_address', request()->ip())->where('order_id', NULL)->get();
+    public static function totalCarts()
+    {
+        if (Auth::check()) {
+            $carts = Cart::where('user_id', Auth::user()->id)->where('order_id', null)->get();
+        } else {
+            $carts = Cart::where('ip_address', request()->ip())->where('order_id', null)->get();
         }
+
         return $carts;
     }
 
-    public static function totalCars(){
-        if(Auth::check()){
-            $carts = Cart::where('user_id', Auth::user()->id)->where('order_id', Null)->get();
-        }else{
-            $carts = Cart::where('ip_address', request()->ip())->where('order_id', Null)->get();
+    public static function totalCars()
+    {
+        if (Auth::check()) {
+            $carts = Cart::where('user_id', Auth::user()->id)->where('order_id', null)->get();
+        } else {
+            $carts = Cart::where('ip_address', request()->ip())->where('order_id', null)->get();
         }
         $totalCars = 0;
-        foreach ($carts as $cart){
+        foreach ($carts as $cart) {
             $totalCars += $cart->car_quantity;
         }
+
         return $totalCars;
     }
 }

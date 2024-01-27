@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use PDO;
 
 class Car extends Model
 {
@@ -26,23 +25,28 @@ class Car extends Model
         'status',
     ];
 
-    public function brand(){
+    public function brand()
+    {
         return $this->belongsTo(Brand::class, 'brand_id');
     }
 
-    public function extras(){
+    public function extras()
+    {
         return $this->hasMany(Extra::class);
     }
 
-    public function protections(){
+    public function protections()
+    {
         return $this->hasMany(Protection::class);
     }
 
-    public function orders(){
+    public function orders()
+    {
         return $this->hasMany(Order::class);
     }
 
-    public function carts(){
+    public function carts()
+    {
         return $this->hasMany(Cart::class);
     }
 }
